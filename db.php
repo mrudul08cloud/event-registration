@@ -2,7 +2,7 @@
 $host = 'database-1.ca1ksoogy10f.us-east-1.rds.amazonaws.com';
 $db   = 'eventdb';
 $user = 'admin';
-$pass = 'admin@123';
+$pass = 'YourPassword123';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
