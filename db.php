@@ -1,5 +1,5 @@
 <?php
-$host = 'YOUR_RDS_ENDPOINT';
+$host = 'database-1.ca1ksoogy10f.us-east-1.rds.amazonaws.com';
 $db   = 'eventdb';
 $user = 'admin';
 $pass = 'YourPassword123';
