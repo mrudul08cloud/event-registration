@@ -1,8 +1,7 @@
-# Use official PHP Apache image
-FROM php:8.2-apache
+FROM php:7.4-apache
 
-# Copy application files to Apache root
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
 COPY . /var/www/html/
 
-# Expose port 80
 EXPOSE 80
