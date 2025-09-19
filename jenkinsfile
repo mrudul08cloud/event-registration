@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_REPO = "mrudul08cloud/event-app"
+        IMAGE_TAG = "latest"
+    }
+    stages {
+        stage('Pull Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/mrudul08cloud/event-registration.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh "docker build -t $DOCKERHUB_REPO:$IMAGE_TAG ."
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    docker push $DOCKERHUB_REPO:$IMAGE_TAG
+                    docker logout
+                    '''
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh '''
+              docker stop event-app || true
+              docker rm event-app || true
+              docker run -d --name event-app -p 80:80 $DOCKERHUB_REPO:$IMAGE_TAG
+                '''
+            }
+        }
+    }
+}
